@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Easily convert your PNG and JPG images with this simple online converter. Convert your images to JPG or PNG format for free.">
+  <meta name="keywords" content="png to jpg converter, jpg to png converter, convert png to jpg, convert jpg to png, free image converter">
+  <title>PNG to JPG and JPG to PNG Converter | Free Online Image Converter</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+    nav li {
+      margin-right: 10px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    main {
+      padding: 10px 20px;
+    }
+    h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+    form label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    form input[type="file"] {
+      margin-bottom: 10px;
+    }
+    form input[type="radio"] {
+      margin-right: 5px;
+    }
+    input[type="submit"] {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+    input[type="submit"]:hover {
+      background-color: #555;
+    }
+    #result {
+      margin-top: 10px;
+      text-align: center;
+    }
+    .button {
+      background-color: #4CAF50; /* Green */
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .button:hover {
+      background-color: #3e8e41;
+    }
+
+    .button:active {
+      background-color: #4CAF50;
+      transform: translateY(2px);
+    }
+
+    .button:focus {
+      outline: none;
+    }
+
+    .button:after {
+      content: "\21E9"; /* Unicode arrow symbol */
+      margin-left: 10px;
+    }
+
+    .button:hover:after {
+      animation: download 1s infinite;
+    }
+
+    @keyframes download {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(5px);
+      }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.download-button {
+  animation-name: download;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+
+}
+
+
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PNG to JPG and JPG to PNG Converter</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Free Online Image Converter</h2>
+    <form method="POST" enctype="multipart/form-data">
+      <label for="imageFile">Select an image to convert:</label><br>
+      <input type="file" id="imageFile" name="imageFile"><br><br>
+      <input type="radio" id="pngToJpg" name="conversionType" value="pngToJpg">
+      <label for="pngToJpg">Convert PNG to JPG</label><br>
+      <input type="radio" id="jpgToPng" name="conversionType" value="jpgToPng">
+      <label for="jpgToPng">Convert JPG to PNG</label><br><br>
+        <input type="submit" value="Convert">
+</form>
+
+<div id="result">
+  <a id="download" class="btn button disabled" href="#" download>Download Converted Image</a>
+
+</div>
+ </main>
+  <footer>
+    <p>&copy; 2023 PNG to JPG and JPG to PNG Converter. All rights reserved.</p>
+  </footer>
+  <script>
+   // get the form, the result div, and the download button
+const form = document.querySelector('form');
+const resultDiv = document.querySelector('#result');
+const downloadButton = document.querySelector('#download');
+
+// add event listener to the form
+form.addEventListener('submit', (event) => {
+  // prevent the form from submitting and reloading the page
+  event.preventDefault();
+  
+  // get the input file and the conversion type
+  const imageFile = document.querySelector('#imageFile').files[0];
+  const conversionType = document.querySelector('input[name="conversionType"]:checked').value;
+
+  // create a new FileReader object
+  const reader = new FileReader();
+
+  // when the file is loaded
+  reader.onload = () => {
+    // create a new image element and set its source to the loaded data URL
+    const image = new Image();
+    image.src = reader.result;
+
+    // when the image is loaded
+    image.onload = () => {
+      // create a canvas element and get its context
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+
+      // set the canvas dimensions to match the image dimensions
+      canvas.width = image.width;
+      canvas.height = image.height;
+
+      // draw the image on the canvas
+      context.drawImage(image, 0, 0);
+
+      // convert the canvas to a data URL based on the selected conversion type
+      const dataURL = (conversionType === 'pngToJpg') ? canvas.toDataURL('image/jpeg') : canvas.toDataURL('image/png');
+
+      // create a new image element and set its source to the converted data URL
+      const convertedImage = new Image();
+      convertedImage.src = dataURL;
+
+      // append the converted image to the result div
+      resultDiv.appendChild(convertedImage);
+
+      // enable the download button and set its href attribute to the converted data URL
+      downloadButton.href = dataURL;
+      downloadButton.download = 'converted_image.' + ((conversionType === 'pngToJpg') ? 'jpg' : 'png');
+      downloadButton.classList.remove('disabled');
+    };
+  };
+
+  // read the file as a data URL
+  reader.readAsDataURL(imageFile);
+});
+
+
+  </script>
+</body>
+</html>
